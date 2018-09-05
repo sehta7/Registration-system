@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 public class User {
@@ -44,14 +45,18 @@ public class User {
 		}
 	}
 	
-	public void deleteUser(String name) {
+	public void deleteUser() {
 		try {
+			System.out.println("Which user to delete?");
+			Scanner sc = new Scanner(System.in);
+			name = sc.nextLine();
+			
 			PrintWriter pw = new PrintWriter("reg.txt");
 			BufferedReader br = new BufferedReader(new FileReader("registration.txt"));
 			
 			String text;
 			while((text = br.readLine()) != null) {
-				if(text.equals("Piter")) {
+				if(text.equals(name)) {
 					br.readLine();
 					br.readLine();
 				}
@@ -59,8 +64,21 @@ public class User {
 					pw.println(text);
 				}
 			}
+			
 			pw.close();
 			br.close();
+			
+			BufferedReader br1 = new BufferedReader(new FileReader("reg.txt"));
+			PrintWriter pw1 = new PrintWriter("registration.txt");
+			while((text = br1.readLine()) != null) {
+				pw1.println(text);
+			}
+			
+			br1.close();
+			pw1.close();
+			
+			File file = new File("reg.txt");
+			file.delete();
 		} catch (IOException e) {
 			System.out.println("File error!");
 		}
